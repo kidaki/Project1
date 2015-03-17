@@ -12,6 +12,13 @@
 
 namespace Controllers;
 
+use Common\Authentication\FileBased;
+use Common\Authentication\InMemory;
+use Common\Authentication\MySQL;
+use Common\Authentication\SQLite;
+
+use Views\AuthenticationSuccessView;
+use Views\AuthenticationFailView;
 
 /**
  * Class AuthController
@@ -25,10 +32,20 @@ class AuthController extends Controller
      */
     public function action()
     {
+        $authentications = [
+            'filebased'  =>  new FileBased()
+        ];
+        
         $postData = $this->request->getPost();
-
-        echo 'Authenticate the above two different ways' . var_dump($postData);
-
-        // example code: $auth = new Authentication($postData['username'], $postData['password']);
+        $auth = $authentications[$postData->auth];
+        
+        $view = new AuthenticationFailView();
+        if($auth->authenticate($postData->username,$postData->password))
+        {
+            $view = new AuthenticationSuccessView();
+        }
+        
+        $view->show();
+        
     }
 }
