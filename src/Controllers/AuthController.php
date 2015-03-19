@@ -14,6 +14,7 @@ namespace Controllers;
 
 use Common\Authentication\FileBased;
 use Common\Authentication\InMemory;
+use Common\Authentication\DataBaseAuthentication;
 use Common\Authentication\MySQL;
 use Common\Authentication\SQLite;
 
@@ -33,7 +34,10 @@ class AuthController extends Controller
     public function action()
     {
         $authentications = [
-            'filebased'  =>  new FileBased()
+            'filebased'     =>  new FileBased(),
+            'inmemory'      =>  new InMemory(),
+            'mysql'         =>  new DataBaseAuthentication('mysql'),
+            'sqlite'        =>  new DataBaseAuthentication('sqlite'),
         ];
         
         $postData = $this->request->getPost();

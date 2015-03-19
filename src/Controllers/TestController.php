@@ -30,6 +30,7 @@ class TestController extends Controller
      */
     public function action()
     {
+        phpinfo();
         var_dump($config);
         $view = new TestView();
         $view->show();
